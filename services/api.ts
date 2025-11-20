@@ -1,6 +1,6 @@
 
-import { mockVehicles, mockUsers, mockAlerts, mockIncidents, mockClients, mockSuppliers, mockErpFiles, mockShifts, mockMedicalSupplies, mockInterestData, mockFuelLogs } from '../data/mockData';
-import { Vehicle, User, Incident, Client, Supplier, ERPFile, ERPFileCategory, IncidentStatus, Shift, MedicalSupply, AuthResponse, Alert, InterestData, VehicleDocument, UserDocument, FuelLog, VehicleHistory } from '../types';
+import { mockVehicles, mockUsers, mockAlerts, mockIncidents, mockClients, mockSuppliers, mockErpFiles, mockShifts, mockMedicalSupplies, mockInterestData, mockFuelLogs, mockSignableDocuments } from '../data/mockData';
+import { Vehicle, User, Incident, Client, Supplier, ERPFile, ERPFileCategory, IncidentStatus, Shift, MedicalSupply, AuthResponse, Alert, InterestData, VehicleDocument, UserDocument, FuelLog, VehicleHistory, SignableDocument, Signature, CertificateInfo } from '../types';
 
 const LATENCY = 500; // ms
 
@@ -17,6 +17,7 @@ let shifts = [...mockShifts];
 let medicalSupplies = [...mockMedicalSupplies];
 let interestData = [...mockInterestData];
 let fuelLogs = [...mockFuelLogs];
+let signableDocuments = [...mockSignableDocuments];
 let runtimeAlerts: Alert[] = [...mockAlerts];
 
 // Helper to generate simple tokens
@@ -540,6 +541,66 @@ export const api = {
   deleteFuelLog: async (id: string) => {
       await sleep(LATENCY);
       fuelLogs = fuelLogs.filter(l => l.id !== id);
+      return true;
+  },
+
+  // Signable Documents API
+  getSignableDocuments: async (userId?: string) => {
+      await sleep(LATENCY);
+      if (userId) {
+          // Return documents that require a signature from this user (pending or signed)
+          return signableDocuments.filter(doc => 
+              doc.signatures.some(sig => sig.userId === userId)
+          );
+      }
+      // Return all documents (Admin view)
+      return signableDocuments;
+  },
+  
+  // Updated Sign Document for AutoFirma / Digital Certificate
+  signDocument: async (docId: string, userId: string, certificateInfo?: CertificateInfo, signatureValue?: string, signedFileName?: string) => {
+      await sleep(LATENCY);
+      const docIndex = signableDocuments.findIndex(d => d.id === docId);
+      if (docIndex > -1) {
+          const sigIndex = signableDocuments[docIndex].signatures.findIndex(s => s.userId === userId);
+          if (sigIndex > -1) {
+              signableDocuments[docIndex].signatures[sigIndex] = {
+                  userId,
+                  signed: true,
+                  signedAt: new Date().toISOString(),
+                  // Store digital signature details
+                  signatureAlgorithm: certificateInfo ? 'SHA256withRSA' : undefined,
+                  certificateInfo,
+                  signatureValue,
+                  signedFileName
+              };
+              return signableDocuments[docIndex];
+          }
+      }
+      return null;
+  },
+  
+  saveSignableDocument: async (doc: Omit<SignableDocument, 'id'>) => {
+      await sleep(LATENCY);
+      const newDoc = { 
+          ...doc, 
+          id: `sd${Date.now()}`,
+          uploadedAt: new Date().toISOString().split('T')[0],
+      } as SignableDocument;
+      signableDocuments.push(newDoc);
+      return newDoc;
+  },
+  deleteSignableDocument: async (id: string) => {
+      await sleep(LATENCY);
+      signableDocuments = signableDocuments.filter(d => d.id !== id);
+      return true;
+  },
+  
+  // Mock File Download
+  downloadFile: async (fileName: string) => {
+      await sleep(500);
+      // In a real app, this would fetch a blob and create a URL
+      alert(`Iniciando descarga de: ${fileName}`);
       return true;
   }
 };

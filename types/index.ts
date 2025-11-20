@@ -145,7 +145,7 @@ export interface AppState {
     user: User | null;
 }
 
-export type Page = 'Dashboard' | 'Vehículos' | 'Empleados' | 'ERP' | 'Operaciones' | 'Datos de Interés' | 'Mi Perfil' | 'Calendario';
+export type Page = 'Dashboard' | 'Vehículos' | 'Empleados' | 'ERP' | 'Operaciones' | 'Firmar Documentos' | 'Datos de Interés' | 'Mi Perfil' | 'Calendario';
 
 // ERP Types
 export interface Client {
@@ -205,4 +205,35 @@ export interface InterestData {
     title: string;
     content: string;
     updatedAt: string;
+}
+
+// Signing Module Types - AutoFirma Compliant
+export interface CertificateInfo {
+    ownerName: string;
+    issuerName: string; // e.g., FNMT
+    serialNumber: string;
+    validFrom: string;
+    validTo: string;
+}
+
+export interface Signature {
+    userId: string;
+    signed: boolean;
+    signedAt?: string; // ISO Date if signed
+    
+    // AutoFirma / Digital Certificate Data
+    signatureAlgorithm?: string; // e.g., 'SHA256withRSA'
+    signatureValue?: string; // Base64 signature string
+    certificateInfo?: CertificateInfo;
+    signedFileName?: string; // The name of the resulting signed file (e.g. doc_firmado.pdf)
+}
+
+export interface SignableDocument {
+    id: string;
+    title: string;
+    description?: string;
+    file: string; // filename
+    uploadedAt: string;
+    uploadedBy: string; // User ID of admin
+    signatures: Signature[]; // Tracking who needs to sign and who has signed
 }

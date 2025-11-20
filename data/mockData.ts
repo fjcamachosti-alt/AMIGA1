@@ -1,5 +1,5 @@
 
-import { Vehicle, User, Alert, Incident, Client, Supplier, ERPFile, Shift, VehicleStatus, VehicleVisibility, UserRole, IncidentStatus, MedicalSupply, InterestData, FuelLog } from '../types';
+import { Vehicle, User, Alert, Incident, Client, Supplier, ERPFile, Shift, VehicleStatus, VehicleVisibility, UserRole, IncidentStatus, MedicalSupply, InterestData, FuelLog, SignableDocument } from '../types';
 
 export const mockVehicles: Vehicle[] = [
   {
@@ -234,4 +234,19 @@ export const mockInterestData: InterestData[] = [
 export const mockFuelLogs: FuelLog[] = [
     { id: 'fl1', vehicleId: '1', date: '2023-10-20', liters: 45.5, cost: 72.50, mileage: 147500, performedBy: 'Carlos Sánchez' },
     { id: 'fl2', vehicleId: '1', date: '2023-10-27', liters: 40.0, cost: 65.00, mileage: 147900, performedBy: 'Carlos Sánchez' },
+];
+
+export const mockSignableDocuments: SignableDocument[] = [
+    {
+        id: 'sd1',
+        title: 'Nueva Política de Privacidad 2024',
+        description: 'Documento obligatorio para todo el personal.',
+        file: 'politica_privacidad_v2.pdf',
+        uploadedAt: '2024-03-01',
+        uploadedBy: 'u1',
+        signatures: [
+            { userId: 'u3', signed: false },
+            { userId: 'u5', signed: true, signedAt: '2024-03-02T10:00:00Z' }
+        ]
+    }
 ];

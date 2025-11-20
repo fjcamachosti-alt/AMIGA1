@@ -61,6 +61,12 @@ AMIGA es un sistema integral de gestión empresarial (ERP/CRM) diseñado especí
    npm start
    ```
 
+## 🔐 Acceso Administrador (Demo)
+
+Para acceder al panel de control completo durante la demostración:
+
+- **Usuario:** `fj.camacho.sti@gmail.com`
+- **Contraseña:** `Apisistem1981`
 
 ---
 **AMIGA** - Optimizando la gestión sanitaria.

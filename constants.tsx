@@ -15,5 +15,6 @@ export const NAV_ITEMS: NavItem[] = [
   { name: 'Empleados', icon: <i data-lucide="users"></i> },
   { name: 'ERP', icon: <i data-lucide="briefcase"></i> },
   { name: 'Operaciones', icon: <i data-lucide="activity"></i> },
+  { name: 'Firmar Documentos', icon: <i data-lucide="file-pen-line"></i> },
   { name: 'Datos de Interés', icon: <i data-lucide="info"></i> },
 ];

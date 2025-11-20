@@ -10,6 +10,7 @@ import { OperationsPage } from './pages/operations/OperationsPage';
 import { MyProfile } from './pages/users/MyProfile';
 import { InterestDataPage } from './pages/interest/InterestDataPage';
 import { GlobalCalendar } from './pages/calendar/GlobalCalendar';
+import { SignDocumentsPage } from './pages/signing/SignDocumentsPage'; // Import new page
 import { AppState, Page, User, UserRole } from './types';
 import { tokenService } from './services/tokenService';
 import { api } from './services/api';
@@ -27,14 +28,7 @@ const App: React.FC = () => {
         const token = tokenService.getAccessToken();
         if (token) {
             api.getUsers().then(users => {
-                 // Demo: restore the first admin user if checking mock token
-                 // In reality, we'd decode token or call /me
-                 // Let's assume for demo persistence we just grab the admin "u1"
-                 // OR, if you logged in as someone else, the state is lost on refresh in this mock.
-                 // To fix this for the demo, we will try to find the user in localStorage if saved, or just default to admin
-                 // For this specific demo, let's require login again to ensure correct role testing, 
-                 // OR better, just clear tokens if we can't validate.
-                 // But to be nice, let's default to an Admin
+                 // Demo logic for persistence
                  const storedUser = users[0]; 
                  setAppState({
                     isAuthenticated: true,
@@ -88,6 +82,7 @@ const App: React.FC = () => {
             case 'Empleados': return user.rol === UserRole.Gestor || (user.rol === UserRole.Oficina && perms.employees);
             case 'ERP': return user.rol === UserRole.Gestor || (user.rol === UserRole.Oficina && perms.erp);
             case 'Operaciones': return user.rol === UserRole.Gestor || (user.rol === UserRole.Oficina && perms.operations) || user.rol === UserRole.Tecnico || user.rol === UserRole.Medico;
+            case 'Firmar Documentos': return true; // Everyone has access (view logic handled inside component)
             case 'Datos de Interés': return user.rol === UserRole.Gestor || user.rol === UserRole.Oficina;
             case 'Calendario': return user.rol === UserRole.Gestor || user.rol === UserRole.Oficina;
             default: return false;
@@ -124,6 +119,8 @@ const App: React.FC = () => {
                 return <ErpPage />;
             case 'Operaciones':
                 return <OperationsPage user={appState.user} />;
+            case 'Firmar Documentos':
+                return <SignDocumentsPage user={appState.user} />;
             case 'Datos de Interés':
                 return <InterestDataPage />;
             case 'Calendario':

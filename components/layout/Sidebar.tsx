@@ -45,6 +45,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate, isOpe
                     if (role === UserRole.Oficina) return perms.operations;
                     if (role === UserRole.Medico || role === UserRole.Tecnico) return true; // Specific sub-sections handled in page
                     return false;
+                case 'Firmar Documentos':
+                    // Visible to everyone, but functionality differs
+                    return true; 
                 case 'Datos de Interés':
                     return role === UserRole.Administrador || role === UserRole.Gestor || role === UserRole.Oficina;
                 case 'Calendario':
