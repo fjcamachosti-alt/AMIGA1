@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AMIGA - Gestión Avanzada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#0D6EFD',
+              'secondary': '#6C757D',
+              'success': '#198754',
+              'danger': '#DC3545',
+              'warning': '#FFC107',
+              'info': '#0DCAF0',
+              'light': '#F8F9FA',
+              'dark': '#212529',
+              'background': '#1a202c',
+              'surface': '#2d3748',
+              'on-surface': '#edf2f7',
+              'on-primary': '#ffffff'
+            }
+          }
+        }
+      }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^18.3.1/",
+    "react": "https://aistudiocdn.com/react@^18.3.1",
+    "react-dom/client": "https://aistudiocdn.com/react-dom@^18.3.1/client",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^18.3.1/"
+  }
+}
+</script>
+</head>
+  <body class="bg-background text-on-surface">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+    <script>
+      // Lucide icons initialization
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
